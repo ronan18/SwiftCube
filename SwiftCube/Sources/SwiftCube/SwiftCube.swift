@@ -3,14 +3,24 @@
 import Foundation
 import CoreImage
 import CoreImage.CIFilterBuiltins
+import BinaryCodable
 
-public struct SC3DLut: CustomDebugStringConvertible {
+public struct SC3DLut: CustomDebugStringConvertible, Codable {
    public var title: String? = nil
     public var type: LUTType! = nil
     public var domain:LUTDomain = .init(min: [0,0,0], max: [1,1,1])
     public  var size: Int! = nil
     public var data: [[Float]] = []
-     init(from rawData: Data) throws {
+    
+    public init(from url: URL) throws {
+        try self.init(rawData: try Data(contentsOf: url))
+    }
+    public init(dataRepresentation: Data) throws {
+        let decoder = BinaryDecoder()
+        let data = try decoder.decode(SC3DLut.self, from: dataRepresentation)
+        self = data
+    }
+    public init( rawData: Data) throws {
          
          let stringData =  String(decoding: rawData, as: UTF8.self)
           guard !stringData.isEmpty else {
@@ -69,48 +79,32 @@ public struct SC3DLut: CustomDebugStringConvertible {
         return "LUT \(title ?? "") \(type) \(size) \(data.count)"
        }
     
-    public func ciFilter() throws -> CIColorCube  {
+    public func ciFilter() throws -> CIFilter  {
         let dimension:Float = Float(self.size)
-        let colorCubeEffect = CIFilter.colorCube()
+        let colorCubeEffect = CIFilter.colorCubeWithColorSpace()
           colorCubeEffect.cubeDimension = dimension
-        
+        colorCubeEffect.colorSpace =  CGColorSpaceCreateDeviceRGB()
         var colorCubeData: [Float32] = []
         self.data.forEach({line in
             colorCubeData.append(contentsOf: [line[0], line[1], line[2], 1.0])
         })
         let cubeData = Data(bytes: colorCubeData, count: colorCubeData.count * 4)
-        
-        
-        /*
-        var colorCubeData: [Float32] = []
-        let size = 8
-        let step = 1.0 / Float(size - 1)
-        for b in 0..<size {
-            for g in 0..<size {
-                for r in 0..<size {
-                    // Calculate the normalized color component values.
-                    let red = Float32(r) * step
-                    let green = Float32(g) * step
-                    // Shift the blue component to add a blue tint.
-                    let blue = min(1.0, Float32(b) * step + 0.5)
-                    let alpha: Float = 1.0
-                    colorCubeData.append(contentsOf: [red, green, blue, alpha])
-                }
-            }
-        }
-        print(colorCubeData)
-        let cubeData = Data(bytes: colorCubeData, count: colorCubeData.count * 4)*/
         colorCubeEffect.cubeData = cubeData
         print(cubeData.debugDescription, "cube data")
         
         return colorCubeEffect
     }
+    public func rawDataRepresentation() throws -> Data {
+        let encoder = BinaryEncoder()
+        let data = try encoder.encode(self)
+        return data
+    }
 }
-public struct LUTDomain {
+public struct LUTDomain: Codable {
     let min: [Double]
     let max: [Double]
 }
-public enum LUTType{
+public enum LUTType: Codable{
     case OneDimensional
     case ThreeDimensional
 }

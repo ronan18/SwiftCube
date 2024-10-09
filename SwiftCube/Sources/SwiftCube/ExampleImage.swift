@@ -41,10 +41,11 @@ struct SwiftUIView: View {
         let lutURL = Bundle.module.url(forResource: "SampleLUT", withExtension: "cube")!
         self.startImage = UIImage(contentsOfFile: url.path())
         let lutData = try Data(contentsOf: lutURL)
-      let lut =  try SC3DLut.init(from: lutData)
+        let lut =  try SC3DLut.init(rawData: lutData)
         print(lut.debugDescription)
         let filter = try lut.ciFilter()
-        filter.inputImage = CIImage(image: startImage!)
+        filter.setValue(CIImage(image: startImage!), forKey: kCIInputImageKey)
+        
         guard  let result = filter.outputImage else {
             self.error = "no result image"
             return

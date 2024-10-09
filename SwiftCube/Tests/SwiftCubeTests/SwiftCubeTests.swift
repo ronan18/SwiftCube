@@ -16,7 +16,7 @@ import UIKit
     
     let inputImageURL = Bundle.module.url(forResource: "SampleImage", withExtension: "jpeg")!
     let startImage = UIImage(contentsOfFile: inputImageURL.path())
-    filter.inputImage = CIImage(image: startImage!)
+    filter.setValue(CIImage(image: startImage!), forKey: kCIInputImageKey)
     let result = filter.outputImage
     #expect(result != nil)
     
