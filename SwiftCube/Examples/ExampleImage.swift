@@ -9,6 +9,7 @@ import SwiftUI
 import Foundation
 import UIKit
 import CoreImage
+import SwiftCube
 
 @available(iOS 17.0, *)
 struct SwiftUIView: View {
@@ -37,8 +38,9 @@ struct SwiftUIView: View {
         }
     }
     func proccess() throws {
-        let url = Bundle.module.url(forResource: "SampleImage", withExtension: "jpeg")!
-        let lutURL = Bundle.module.url(forResource: "SampleLUT", withExtension: "cube")!
+        let url = Bundle.main.url(forResource: "SampleImage", withExtension: "jpeg")!
+        let lutURL = Bundle.main.url(forResource: "SampleLUT", withExtension: "cube")!
+
         self.startImage = UIImage(contentsOfFile: url.path())
         let lutData = try Data(contentsOf: lutURL)
         let lut =  try SC3DLut.init(rawData: lutData)

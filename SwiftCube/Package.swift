@@ -21,13 +21,11 @@ let package = Package(
         .target(
             name: "SwiftCube", dependencies: [
                 .product(name: "BinaryCodable", package: "BinaryCodable")
-            ], resources: [
-                .process("SampleLUT.cube"),
-                .process("SampleImage.jpeg")
             ]),
         .testTarget(
             name: "SwiftCubeTests",
-            dependencies: ["SwiftCube"]
+            dependencies: ["SwiftCube"], resources: [ .process("SampleLUT.cube"),
+                                                       .process("SampleImage.jpeg")]
         ),
     ]
 

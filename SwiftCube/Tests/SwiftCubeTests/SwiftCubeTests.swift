@@ -10,7 +10,7 @@ import UIKit
  
     let lutURL = Bundle.module.url(forResource: "SampleLUT", withExtension: "cube")!
     let lutData = try Data(contentsOf: lutURL)
-  let lut =  try SC3DLut.init(from: lutData)
+    let lut =  try SC3DLut.init(rawData: lutData)
     print(lut.debugDescription)
     let filter = try lut.ciFilter()
     
@@ -21,4 +21,22 @@ import UIKit
     #expect(result != nil)
     
     return
+}
+
+@Test func dataInOut() async throws {
+    let lutURL = Bundle.module.url(forResource: "SampleLUT", withExtension: "cube")!
+    let lutData = try Data(contentsOf: lutURL)
+    let lut =  try SC3DLut.init(rawData: lutData)
+    print(lut.debugDescription)
+    let filter = try lut.ciFilter()
+    
+    let data = try lut.rawDataRepresentation()
+    
+    let lut2 = try SC3DLut.init(dataRepresentation: data)
+    
+    #expect(lut.title == lut2.title)
+    #expect(lut.data == lut2.data)
+    #expect(lut.size == lut2.size)
+    #expect(lut.type == lut2.type)
+    
 }
