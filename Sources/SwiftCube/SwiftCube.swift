@@ -12,14 +12,19 @@ public struct SC3DLut: CustomDebugStringConvertible, Codable {
     public  var size: Int! = nil
     public var data: [[Float]] = []
     
+    /// Initialize a LUT from a URL
     public init(contentsOf url: URL) throws {
         try self.init(fileData: try Data(contentsOf: url))
     }
+    
+    /// Initialize a LUT from a Data object generated from the .rawDataRepresentation() method
     public init( dataRepresentation: Data) throws {
         let decoder = BinaryDecoder()
         let data = try decoder.decode(SC3DLut.self, from: dataRepresentation)
         self = data
     }
+    
+    /// Initialize a LUT from a .cube file's data
     public init( fileData: Data) throws {
          
          let stringData =  String(decoding: fileData, as: UTF8.self)
@@ -41,11 +46,11 @@ public struct SC3DLut: CustomDebugStringConvertible, Codable {
                  guard let dSize = Int(parts[1]) else {
                      throw SwiftCubeError.invalidSize
                  }
-                 print("size: \(dSize)")
+                 //print("size: \(dSize)")
                  size = dSize
             case "LUT_1D_SIZE":
                  type = .OneDimensional
-                 print("size: ONE D")
+                 //print("size: ONE D")
                  throw SwiftCubeError.oneDimensionalLutNotSupported
                  
              case "DOMAIN_MIN":
@@ -79,6 +84,7 @@ public struct SC3DLut: CustomDebugStringConvertible, Codable {
         return "LUT \(title ?? "") \(type) \(size) \(data.count)"
        }
     
+    /// Generate a CIFilter in the current device colorspace
     public func ciFilter() throws -> CIFilter  {
         let dimension:Float = Float(self.size)
         let colorCubeEffect = CIFilter.colorCubeWithColorSpace()
@@ -97,6 +103,7 @@ public struct SC3DLut: CustomDebugStringConvertible, Codable {
         
         return colorCubeEffect
     }
+    /// Generate a binary Data representation of the LUT for storage
     public func rawDataRepresentation() throws -> Data {
         let encoder = BinaryEncoder()
         let data = try encoder.encode(self)
