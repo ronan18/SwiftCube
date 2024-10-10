@@ -26,8 +26,8 @@ let package = Package(
             name: "SwiftCubeTests",
             dependencies: ["SwiftCube"], resources: [
                 .process("SampleLUT.cube"),
-                .process("RED_NARCISSUS.cube"),
-                                                       .process("SampleImage.jpeg")]
+               
+                                                       .process("SampleImage.jpg")]
         ),
     ]
 
