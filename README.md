@@ -32,4 +32,4 @@ let filter = try lut.rawDataRepresentation()
 ```
 
 ## References
-Based off of [Cocoa LUT](https://github.com/alejandrojapkin/CocoaLUT)
+Based off of [Cocoa LUT](https://github.com/alejandrojapkin/CocoaLUT) & [parse-cube-lut](https://github.com/thibauts/parse-cube-lut)
