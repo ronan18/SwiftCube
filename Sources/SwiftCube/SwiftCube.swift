@@ -12,22 +12,22 @@ public struct SC3DLut: CustomDebugStringConvertible, Codable {
     public  var size: Int! = nil
     public var data: [[Float]] = []
     
-    public init(from url: URL) throws {
-        try self.init(rawData: try Data(contentsOf: url))
+    public init(contentsOf url: URL) throws {
+        try self.init(fileData: try Data(contentsOf: url))
     }
-    public init(dataRepresentation: Data) throws {
+    public init( dataRepresentation: Data) throws {
         let decoder = BinaryDecoder()
         let data = try decoder.decode(SC3DLut.self, from: dataRepresentation)
         self = data
     }
-    public init( rawData: Data) throws {
+    public init( fileData: Data) throws {
          
-         let stringData =  String(decoding: rawData, as: UTF8.self)
+         let stringData =  String(decoding: fileData, as: UTF8.self)
           guard !stringData.isEmpty else {
               throw SwiftCubeError.couldNotDecodeData
           }
          let lines = stringData.components(separatedBy: "\n")
-         print("parsing", rawData.description, lines.count)
+         //print("parsing", fileData.description, lines.count)
         
          try lines.forEach {line in
              guard !line.isEmpty && line.first != "#" else {return}
@@ -71,7 +71,7 @@ public struct SC3DLut: CustomDebugStringConvertible, Codable {
          guard type != nil else {
              throw SwiftCubeError.invalidType
          }
-         print("title: \(title)")
+       //  print("title: \(title)")
          
          
     }

@@ -5,12 +5,28 @@ import UIKit
 @testable import SwiftCube
 
 @available(iOS 16.0, *)
-@Test func example() async throws {
-    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+@Test func importAndCreateLUT() async throws {
  
     let lutURL = Bundle.module.url(forResource: "SampleLUT", withExtension: "cube")!
     let lutData = try Data(contentsOf: lutURL)
-    let lut =  try SC3DLut.init(rawData: lutData)
+    let lut =  try SC3DLut.init(fileData: lutData)
+    print(lut.debugDescription)
+    let filter = try lut.ciFilter()
+    
+    let inputImageURL = Bundle.module.url(forResource: "SampleImage", withExtension: "jpg")!
+    let startImage = UIImage(contentsOfFile: inputImageURL.path())
+    filter.setValue(CIImage(image: startImage!), forKey: kCIInputImageKey)
+    let result = filter.outputImage
+    #expect(result != nil)
+    
+    return
+}
+@available(iOS 16.0, *)
+@Test func importAndCreateLUTFromURL() async throws {
+ 
+    let lutURL = Bundle.module.url(forResource: "SampleLUT", withExtension: "cube")!
+   
+    let lut =  try SC3DLut.init(contentsOf: lutURL)
     print(lut.debugDescription)
     let filter = try lut.ciFilter()
     
@@ -26,7 +42,7 @@ import UIKit
 @Test func dataInOut() async throws {
     let lutURL = Bundle.module.url(forResource: "SampleLUT", withExtension: "cube")!
     let lutData = try Data(contentsOf: lutURL)
-    let lut =  try SC3DLut.init(rawData: lutData)
+    let lut =  try SC3DLut.init(fileData: lutData)
     print(lut.debugDescription)
     let filter = try lut.ciFilter()
     
