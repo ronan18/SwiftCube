@@ -30,3 +30,6 @@ let filter = try lut.ciFilter()
 let lut: SC3DLUT = try SC3DLUT(contentsOf: URL)
 let filter = try lut.rawDataRepresentation()
 ```
+
+## References
+Based off of [Cocoa LUT](https://github.com/alejandrojapkin/CocoaLUT)
