@@ -20,7 +20,7 @@ let lutFromDataRepresentation = try SC3DLUT(dataRepresentation: Data)
 ```
 
 **Create a CIFilter**
-Returns a CIFilter.colorCubeWithColorSpace() filter in CGColorSpaceCreateDeviceRGB() colorspace.
+Returns a ```swift CIFilter.colorCubeWithColorSpace() ``` filter in ```swift CGColorSpaceCreateDeviceRGB() ``` colorspace.
 ```swift
 let lut: SC3DLUT = try SC3DLUT(contentsOf: URL)
 let filter = try lut.ciFilter()
