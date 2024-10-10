@@ -8,7 +8,7 @@ import UIKit
 @Test func example() async throws {
     // Write your test here and use APIs like `#expect(...)` to check expected conditions.
  
-    let lutURL = Bundle.module.url(forResource: "SampleLUT", withExtension: "cube")!
+    let lutURL = Bundle.module.url(forResource: "RED_NARCISSUS", withExtension: "cube")!
     let lutData = try Data(contentsOf: lutURL)
     let lut =  try SC3DLut.init(rawData: lutData)
     print(lut.debugDescription)

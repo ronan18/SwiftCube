@@ -86,6 +86,9 @@ public struct SC3DLut: CustomDebugStringConvertible, Codable {
         colorCubeEffect.colorSpace =  CGColorSpaceCreateDeviceRGB()
         var colorCubeData: [Float32] = []
         self.data.forEach({line in
+            guard line.count == 3 else {
+                return
+            }
             colorCubeData.append(contentsOf: [line[0], line[1], line[2], 1.0])
         })
         let cubeData = Data(bytes: colorCubeData, count: colorCubeData.count * 4)

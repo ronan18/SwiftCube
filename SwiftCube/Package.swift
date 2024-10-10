@@ -24,7 +24,9 @@ let package = Package(
             ]),
         .testTarget(
             name: "SwiftCubeTests",
-            dependencies: ["SwiftCube"], resources: [ .process("SampleLUT.cube"),
+            dependencies: ["SwiftCube"], resources: [
+                .process("SampleLUT.cube"),
+                .process("RED_NARCISSUS.cube"),
                                                        .process("SampleImage.jpeg")]
         ),
     ]
