@@ -5,6 +5,7 @@ import CoreImage
 import CoreImage.CIFilterBuiltins
 import BinaryCodable
 
+/// SwiftCube representation of a 3D LUT
 public struct SC3DLut: CustomDebugStringConvertible, Codable {
    public var title: String? = nil
     public var type: LUTType! = nil
