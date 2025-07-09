@@ -28,10 +28,11 @@ public struct SC3DLut: CustomDebugStringConvertible, Codable {
     /// Initialize a LUT from a .cube file's data
     public init( fileData: Data) throws {
          
-         let stringData =  String(decoding: fileData, as: UTF8.self)
+         var stringData =  String(decoding: fileData, as: UTF8.self)
           guard !stringData.isEmpty else {
               throw SwiftCubeError.couldNotDecodeData
           }
+        stringData = stringData.replacingOccurrences(of: "\r", with: "\n")
          let lines = stringData.components(separatedBy: "\n")
          //print("parsing", fileData.description, lines.count)
         
@@ -63,6 +64,7 @@ public struct SC3DLut: CustomDebugStringConvertible, Codable {
                  
                  data.append(try parts.map {
                      guard let double = Float($0) else {
+                        // print("SwiftCUBE: Invalid Data Point: \(String($0)), line: \(line), parts: \(parts)")
                          throw SwiftCubeError.invalidDataPoint
                      }
                      return double

@@ -4,10 +4,12 @@ import CoreImage
 import UIKit
 @testable import SwiftCube
 
+let testingLUT = Bundle.module.url(forResource: "SampleLUT", withExtension: "cube")!
+
 @available(iOS 16.0, *)
 @Test func importAndCreateLUT() async throws {
  
-    let lutURL = Bundle.module.url(forResource: "SampleLUT", withExtension: "cube")!
+    let lutURL = testingLUT
     let lutData = try Data(contentsOf: lutURL)
     let lut =  try SC3DLut.init(fileData: lutData)
     print(lut.debugDescription)
@@ -24,7 +26,7 @@ import UIKit
 @available(iOS 16.0, *)
 @Test func importAndCreateLUTFromURL() async throws {
  
-    let lutURL = Bundle.module.url(forResource: "SampleLUT", withExtension: "cube")!
+    let lutURL = testingLUT
    
     let lut =  try SC3DLut.init(contentsOf: lutURL)
     print(lut.debugDescription)
@@ -40,7 +42,7 @@ import UIKit
 }
 
 @Test func dataInOut() async throws {
-    let lutURL = Bundle.module.url(forResource: "SampleLUT", withExtension: "cube")!
+    let lutURL = testingLUT
     let lutData = try Data(contentsOf: lutURL)
     let lut =  try SC3DLut.init(fileData: lutData)
     print(lut.debugDescription)
